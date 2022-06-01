@@ -4,7 +4,7 @@ var radius;
 let fcount = 0;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(400, 300);
   background(255);
 
   radius = 25;
