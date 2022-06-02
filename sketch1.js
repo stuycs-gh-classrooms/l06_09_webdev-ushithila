@@ -1,38 +1,137 @@
-var cx;
-var cy;
-var theta;
-var g;
+var numRows;
+var numCols;
+var rectWidth;
+var rectHeight;
+var count;
+
+function settings() {
+  numRows = 20;
+  numCols = 20;
+  rectWidth = 20;
+  rectHeight = 20;
+  createCanvas(numCols * rectWidth, numRows * rectHeight);
+}
 
 function setup() {
-  createCanvas(400, 400);
-  theta = 0;
-  cx = 0;
-  g = 0;
+  frameRate();
+  count = 0;
 }
+
 
 function draw() {
-  background(255);
-  fill(0, g, 0);
-  cy = newY(100, height/2, theta);
-  cx = newX(100, width/2, theta);
-  circle(cx, cy, 50);
-  line(width/2, height/2, cx, cy);
-  theta++;
+  fill(255);
+  if (count < 5 ) {
+    tile();
+  } 
+  else if (count < 10) {
+    alternateRows();
+  }
+  else if (count < 15) {
+    alternateCols();
+  }
+  else if (count < 20) {
+    marksTheSpot();
+  }
+  else if (count < 25) {
+    checkerboard();
+  }
+  count = (count + 1) % 25;
+}
+
+function tile() {
+  var x=0;
+  var y=0;
+
+  for (var r=0; r < numRows; r++) {
+    for (var c=0; c < numCols; c++) {
+      rect(x, y, rectWidth, rectHeight);
+      x+= rectWidth;
+    }
+    y+= rectHeight;
+    x= 0;
+  }
+}
+
+function alternateRows() {
+  var x=0;
+  var y=0;
+
+  for (var r=0; r <= numRows; r++) {
+    if (r % 2 == 1) {
+      fill(0);
+    } else {
+      fill(255);
+    }
+    for (var c=0; c <= numCols; c++) {
+      rect(x, y, rectWidth, rectHeight);
+      x+= rectWidth;
+    }
+    y+= rectHeight;
+    x= 0;
+  }
+}
+
+function alternateCols() {
+  var x=0;
+  var y=0;
+
+  for (var r=0; r < numRows; r++) {
+    for (var c=0; c < numCols; c++) {
+      if (c % 2 == 1) {
+        fill(0);
+      } else {
+        fill(255);
+      }
+      rect(x, y, rectWidth, rectHeight);
+      x+= rectWidth;
+    }
+    y+= rectHeight;
+    x= 0;
+  }
+}
+
+/* ===================
+  Create a grid of rectangles using the global variables.
   
-  if (theta % 30 == 0) {
-    g+= 10;    
-  }
-  if (g > 255) {
-    g = 0;
+  fill color should create a checkerboard pattern.
+ =================== */
+function checkerboard() {
+  var x=0;
+  var y=0;
+  var i = 0;
+
+  for (let r=0; r < numRows; r++) {
+    for (let c=0; c < numCols; c++) {
+      if (i % 2 == 1) {
+        fill(0);
+      } else {
+        fill(255);
+      }
+      rect(x, y, rectWidth, rectHeight);
+      x+= rectWidth;
+      i++;
+    }
+    y+= rectHeight;
+    x= 0;
+    i++;
   }
 }
 
-var newY(var r, var c, var theta) {
-  var y = sin(radians(theta));
-  return r * y + c;
-}
+function marksTheSpot() {
+  var x=0;
+  var y=0;
 
-var newX(var r, var c, var theta) {
-  var x = cos(radians(theta));
-  return r * x + c;
+  for (let r=0; r < numRows; r++) {
+    for (let c=0; c < numCols; c++) {
+      if (c == r || c == (numRows-1) -r) {
+        fill(0);
+      } else {
+        fill(255);
+      }
+      rect(x, y, rectWidth, rectHeight);
+      x+= rectWidth;
+    }
+    y+= rectHeight;
+    x = 0;
+  }
 }
